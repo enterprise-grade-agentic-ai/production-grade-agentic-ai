@@ -1,0 +1,17 @@
+intent_analysis_task:
+  name: intent_analysis_task
+  description: >
+    Analyse the prompt - {prompt}. 
+    First check intent between research on an emerging technology or follow up question 
+    on already researched emerging technology. In case the intent is to research on emerging 
+    technology, extract the topic of emerging technology from the prompt. 
+    You are also expected to extract the writing style from the prompt "{prompt}" as well as user 
+    preferences - "{preferences}". Please note that prompt is given priority over preferences.
+  expected_output: >
+    Output is to be structured with the intent picked from a enum containing below values:
+      EMERGING_TECHNOLOGY_RESEARCH - picked when the user has requested research on an emerging technology
+      EMERGING_TECHNOLOGY_FOLLOW_UP_QUERY - picked when the user has a follow up query on already researched emerging technology
+    In case the intent is EMERGING_TECHNOLOGY_RESEARCH, the output will also have topic requested for the emerging technology.
+    The expected writing style also needs to be extracted from the prompt.
+  agent: intent_analyst
+

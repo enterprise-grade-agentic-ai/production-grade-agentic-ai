@@ -1,0 +1,133 @@
+orchestrator_task:
+  name: orchestrator_task
+  description: >
+    Input:
+    1. User Prompt: "{prompt}"
+    2. ActorId: "{actorId}"
+    3. SessionId: "{sessionId}"
+    4. Critic Agent Feedback on Report Quality: "None"
+    5. Already Generated Answer: "None"
+    
+    This task has below sub-tasks:
+    1. Identify intent of the user prompt - "{prompt}". Intent is from the below list:
+        EMERGING_TECHNOLOGY_RESEARCH - for research on emerging technology
+        EMERGING_TECHNOLOGY_FOLLOW_UP_QUERY - for followup question to report on emerging technology
+        GENERAL_CHAT - for general chat not related to any emerging technology
+      This sub-task also identifies writing style from the user prompt and preferences. 
+      Identifying the topic of research from the user prompt is also part of this sub-task
+      if the intent is EMERGING_TECHNOLOGY_RESEARCH or EMERGING_TECHNOLOGY_FOLLOW_UP_QUERY.
+    2. If the intent is to research on emerging technology:
+      A) first research and identify 3-5 main bullet points.
+      B) Expand each bullet point to form a section of the final report
+    3. If the intent is a followup on already researched emerging technology, 
+      then answer followup question while taking conversation history into consideration.
+    4. If the intent is general chat, respond based on the conversation history only.
+
+    Example 1:
+      Query: Can you research on electric cars?:
+      Plan Steps:
+        1. Delegate to Prompt Intent Analyzer Agent by providing user prompt.
+           Since the user is asking for research on a topic, agent will
+           identify intent as EMERGING_TECHNOLOGY_RESEARCH. Agent will 
+           identify the topic as "Electric cars".
+           Agent will fetch the preferences using Get Preferences Tool.
+           For fetching user preferences, Actor: {actorId} and 
+           Session: {sessionId} is to be used. Agent will then identify 
+           write style based on user prompt and preferences returned by the tool. 
+           Let us say agent identified style as "neutral but detailed".
+        2. Delegate to Senior Data Researcher agent by providing research topic
+           as "Electric cars", and style as "neutral but detailed".
+           If there is already available generated answer, and this agent
+           is called second time, this agent will not use data researcher agent,
+           and will delegate to Reporting Analyst agent. If there is no available
+           generated answer, Agent will search the internet using the search tools
+           and then generate. 3 bullet points as:
+           a. Innovations in Battery Technology
+           b. Broadening Electric Car Accessibility
+           c. Global Sales Momentum and Market Transformation
+        3. Delegate to Reporting Analyst agent by providing research topic
+           as "Electric cars", and style as "neutral but detailed" and 3 bullet points
+           identified by Senior Data Researcher. If there is already available 
+           generated answer, this agent will try to refine the already generated
+           answer by incorporating the feedback from critic agent.  If there is 
+           no available generated answer, Agent will search the internet using the search tools
+           and bullet points identified by the Senior Data Researcher agent.
+           If there is available generated answer, Agent will refine it based on the
+           feedback provided by critic agent.
+           Reporting Analyst agent will list down the report in below structure. 
+           In the below structure any content between chevrons is told to identify
+           that it is dynamic and example doesn't mention its content. 
+           # <Identified title of the report based on the topic>
+            ## Innovations in Battery Technology
+              ### Overview
+                <Overview of the Innovations in Battery Technology>
+              ### Key Developments:
+                + <First Key development related to the Innovations in Battery Technology>
+                + <Second Key development related to the Innovations in Battery Technology>
+                + <Third Key development related to the Innovations in Battery Technology>
+              ### Impact
+                <Impact of the Innovations in Battery Technology on the world>
+            ## Broadening Electric Car Accessibility
+              ### Overview
+                <Overview of the Broadening Electric Car Accessibility>
+              ### Key Developments:
+                + <First Key development related to the Broadening Electric Car Accessibility>
+                + <Second Key development related to the Broadening Electric Car Accessibility>
+                + <Third Key development related to the Broadening Electric Car Accessibility>
+              ### Impact
+                <Impact of the Broadening Electric Car Accessibility on the world>
+            ## Global Sales Momentum and Market Transformation
+              ### Overview
+                <Overview of the Global Sales Momentum and Market Transformation>
+              ### Key Developments:
+                + <First Key development related to the Global Sales Momentum and Market Transformation>
+                + <Second Key development related to the Global Sales Momentum and Market Transformation>
+                + <Third Key development related to the Global Sales Momentum and Market Transformation>
+              ### Impact
+                <Impact of the Global Sales Momentum and Market Transformation on the world>
+            ## Conclusion
+              <Conclusion the report>
+        4. Manager agent returns the output as:
+          {
+            "intent": "EMERGING_TECHNOLOGY_RESEARCH",
+            "answer": "<Answer as generated in step #3>"
+          }
+
+    Example 2:
+      Query: What if I loose the power while on the road?:
+      Plan Steps:
+        1. Delegate to Prompt Intent Analyzer Agent by providing user prompt.
+           Since the user is asking for a follow up question and not mentioning
+           about researching on a topic, agent will
+           identify intent as EMERGING_TECHNOLOGY_FOLLOW_UP_QUERY. Agent will 
+           not identify any research topic, since it is a followup question.
+           Agent will fetch the preferences using Get Preferences Tool.
+           For fetching user preferences, Actor: {actorId} and 
+           Session: {sessionId} is to be used. Agent will then identify 
+           write style based on user prompt and preferences returned by the tool. 
+           Let us say agent identified style as "neutral but detailed".
+        2. Delegate to Followup Question Agent by providing prompt as
+           "What if I loose the power while on the road?", and style as 
+           "neutral but detailed". Agent will first fetch the conversation 
+           history using the tools available to it. For fetching 
+           conversation history, Actor: {actorId} and Session: {sessionId} is
+           to be used. Agent will search the internet using the search tools
+           and then generate answer based on user prompt, conversation history,
+           user preferences and data fetched from the internet.
+        3. Manager agent returns the output as:
+          {
+            "intent": "EMERGING_TECHNOLOGY_FOLLOW_UP_QUERY",
+            "answer": "<Answer as generated in step #2>"
+          }
+        
+    Plan Step by Step and make sure to delegate to right agents at right place
+    based on the provided examples.
+  expected_output: >
+    Output in structured format. explicitly mention in the output that the answer
+    is for a research report, or an answer to a followup question. 
+    If the answer is for a research report, the output will be in markdown format
+    containing title, list of sections, and conclusion of the report. Each section will
+    contain title, overview, list of key developments and impact on the world.
+    If the answer is for a followup question, the output will be in markdown format
+    containing 2-3 key points in less than 100 words.
+  markdown: True

@@ -1,0 +1,15 @@
+banner_creation_task:
+  name: banner_creation_task
+  description: >
+    User has requested banner image for a section for the report
+    Section Topic is: {topic}.
+    Section Overview is: {overview}.
+    Expected Writing Style for the report is: {style}
+    Main task is to generate a banner image for the topic given its overview and expected
+    style. Banner should not include any text. 
+    You should use dall-e tool to generate the image.
+    Please ensure that only "image_description" is passed to the tool as an argument, and
+    it should be plain string representing prompt for the image generation. 
+  expected_output: >
+    URL of the created banner.
+  agent: banner_creator

@@ -1,0 +1,35 @@
+critic_task:
+  name: critic_task
+  description: >
+    Input:
+      User Query: "{prompt}"
+      User Expected Text Style: "{style}"
+      Generated Text: "{report}"
+
+    Perform below tasks on the context received:
+    1.  Quality Review: Analyze the text for report quality.
+        Evaluate the quality of report generated for emerging technology. 
+        A generation can be considered high quality if:
+        a) it has a understandable title, 
+        b) it has 3 to 5 sections
+        c) each section has title, key developments and impact.
+        d) number of key developments in each section has two to four key developments
+        e) it adds to the user's comprehension of the topic in question. 
+        f) the report doesn't refer to brand or company name. 
+        g) Overview of each section is between less than 50 words
+        h) each key development is between 50-100 words
+        i) impact in each section is between 50-100 words
+        j) the report doesn't have long sentences, hence making it easier to read
+        k) the report has a conclusion between 50-100 words
+        l) the report sections address different sub-topics, though those could be connected to the same topic mentioned in the query
+    2.  Generate Report: Compile your findings into a structured report.
+  expected_output: >
+    A structured report with two fields:
+
+    1. Quality Review: A string containing all specific suggestions for improving brevity
+        (e.g., 'Replace "in order to" with "to"', 'Remove redundant phrase "absolutely essential"').
+      If the text is already high quality, state: 'Quality is good. No changes needed.'
+      Only suggestions for improvement should be included in the report.
+    2. Final Verdict:
+      True if 'Approved', False if 'Requires Revision'.
+  agent: critic_agent

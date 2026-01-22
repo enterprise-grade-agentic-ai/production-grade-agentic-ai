@@ -1,0 +1,25 @@
+[project]
+name = "emergingtechnologyresearch"
+version = "0.1.0"
+description = "emergingTechnologyResearch using crewAI"
+authors = [
+    { name = "DeepLens Tech", email = "support@deeplens.tech" },
+]
+requires-python = ">=3.10,<3.14"
+dependencies = [
+    "boto3>=1.40.35",
+    "crewai[tools]>=1.6.1",
+    "langfuse>=3.5.0",
+    "openinference-instrumentation-crewai>=0.1.13",
+    "rich>=14.2.0",
+    "termcolor>=3.2.0",
+]
+
+[build-system]
+requires = [
+    "hatchling",
+]
+build-backend = "hatchling.build"
+
+[tool.crewai]
+type = "crew"

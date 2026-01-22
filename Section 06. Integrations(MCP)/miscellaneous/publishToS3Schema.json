@@ -1,0 +1,23 @@
+[
+  {
+    "description": "This tool will publish the generated emerging technology report to S3",
+    "inputSchema": {
+      "properties": {
+        "report": {
+          "description": "Generated report to be published. Report will be in JSON format represented as a string.",
+          "type": "string"
+        },
+        "topic": {
+          "description": "The title of the report on emerging technology research.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "topic",
+        "report"
+      ],
+      "type": "object"
+    },
+    "name": "publishReportLambdaFunction"
+  }
+]

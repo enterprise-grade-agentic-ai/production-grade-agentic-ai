@@ -1,0 +1,28 @@
+research_task:
+  name: research_task
+  description: >
+    Main task is to conduct a thorough research about {topic}.
+    Make sure you find any interesting and relevant information given
+    the current year is {current_year}. The response should be bullet points.
+  expected_output: >
+    A list with 3 bullet points of the most relevant information about {topic}
+  agent: researcher
+
+reporting_task:
+  name: reporting_task
+  description: >
+    Main task is to generate a report on {topic}.
+    Review the research bullet points you got and expand each bullet point into a full section for a report.
+    Make sure the report is detailed and contains title, overview, key developments and impact
+    of each section. Report also has a title aligning with the user requested topic.
+    Report also has a conclusion generated from the report sections. 
+  expected_output: >
+    A fully fledged report in structured format with the main points, each with a 
+    full section of information. Output should have multiple sections. Each 
+    section has title as a string representing title of the section, overview
+    as a string giving brief overview of the section, keyDevelopments as an 
+    array of strings to represent key developments in the title of section,
+    and impact as a string representing the impact the title had on the world. 
+    Report should also have report title and conclusion along with list 
+    of sections.
+  agent: reporting_analyst

@@ -25,6 +25,8 @@ share/python-wheels/
 .installed.cfg
 *.egg
 MANIFEST
+# Requirement.txt file since we are using uv for dependency management
+requirements.txt
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
@@ -205,3 +207,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# MacOS
+.DS_Store
+
+# AWS AgentCore
+.bedrock_agentcore.yaml
+.bedrock_agentcore/
