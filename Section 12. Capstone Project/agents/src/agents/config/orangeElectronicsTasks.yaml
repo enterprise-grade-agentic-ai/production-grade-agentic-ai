@@ -1,0 +1,93 @@
+intent_detection_task:
+  name: intent_detection_task
+  description: >
+    Input:
+    1. Conversation History: "{conversationHistory}"
+    2. User Query: "{prompt}"
+    
+    Conversation History is in the chronological order. And User Query is the current query from
+    the user. The task is to analyze the user query and conversation history to determine the right
+    intent of the question. Please note that the last message in the conversation history can be
+    to ask user about any followup question regarding the request. In that case the user query
+    can be containing the answer to the specific question.
+  expected_output: >
+    1. If the intent is to manage the device registration of Orange devices like laptops, tablets and mobiles,
+    then the output intent will be DEVICE_REGISTRATION.
+    2. If the intent is to know the devices sold Orange Electronics like laptops, tablets and mobiles,
+    then the output intent will be PRODUCT_INFORMATION.
+    3. If the intent is to greet or say bye or thanks or exchange pleasantries to the bot or
+    ask for features supported by the bot or services offered by the bot, then the output 
+    intent will be GREETINGS.
+    4. If the intent is neither of the above, then the output intent will be NOT_VALID. If the user 
+    queries about religion, sex, gender, politics, crime and other aspects, then also the 
+    output intent will be NOT_VALID
+
+device_registration_task:
+  name: device_registration_task
+  description: >
+    Input:
+    1. Conversation History: "{conversationHistory}"
+    2. User Query: "{prompt}"
+    3. Customer ID: "{customerId}"
+    4. Customer First Name: "{customerFirstName}"
+    
+    Conversation History is in the chronological order. And User Query is the current query from
+    the user. Please note that the last message in the conversation history can be to ask user about 
+    any followup question regarding the request. In that case the user query can be containing 
+    the answer to the specific question. 
+    
+    The task is to register the device or delete the registered device, or 
+    return the list of devices depending on the user query. 
+  expected_output: >
+    String representing either device registration or removal success or list of devices already registered.
+    If device registration is successful, user needs to be informed the device ID and whether it has 
+    been added successfuly. If the device removal is successful, user needs to be informed 
+    the device ID and whether it has been removed succesffuly. If the list of devices
+    has been asked, user needs to be informed about comma seperated list of device IDs in the
+    system. The output should be structured in a way so that it is readable to a 
+    non-technical user reading on mobile device.
+    The response should be concise.
+
+product_information_task:
+  name: production_information_task
+  description: >
+    Input:
+    1. Conversation History: "{conversationHistory}"
+    2. User Query: "{prompt}"
+    3. Customer ID: "{customerId}"
+    4. Customer First Name: "{customerFirstName}"
+    
+    Conversation History is in the chronological order. And User Query is the current query from
+    the user. Please note that the last message in the conversation history can be to ask user about 
+    any followup question regarding the request. In that case the user query can be containing 
+    the answer to the specific question. 
+    
+    The task is to help user with the products and services offered by Orange Electronics based on the
+    user query. You shouldn't rely on the LLM's knowledge and instead use the knowledge base for 
+    the products and services offered by Orange Electronics.
+  expected_output: >
+    String representing products and services offered based on user query. The output should
+    be structured in a way so that it is readable to a non-technical user reading on mobile device. 
+    The response should be concise.
+
+greetings_task:
+  name: greetings_task
+  description: >
+    Input:
+    1. Conversation History: "{conversationHistory}"
+    2. User Message: "{prompt}"
+    3. Customer ID: "{customerId}"
+    4. Customer First Name: "{customerFirstName}"
+    
+    Conversation History is in the chronological order. And User Query is the current query from
+    the user. Please note that the last message in the conversation history can be to ask user about 
+    any followup question regarding the request. In that case the user query can be containing 
+    the answer to the specific question. 
+    
+    The task is to reply the greetings message from the user. If the user asks for the features or
+    services supported by this bot, then you may mention that bot is in limited preview, and 
+    currently users can manage (add/remove/list) devices as well as ask for products and services
+    offered by Orange Electronics.
+  expected_output: >
+    String representing greeting which is readable to a non-technical user reading on mobile device.
+    The response should be concise.
