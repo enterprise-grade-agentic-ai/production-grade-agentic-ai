@@ -1,0 +1,150 @@
+planner_task:
+  name: planner_task
+  description: >
+    Research Question: "{question}"
+
+    Decompose this question into exactly 1-2 sub-question for deep web research.
+    Each sub-question must:
+    1. Be self-contained and answerable independently via web search
+    2. Cover a distinct dimension of the topic (e.g., technical mechanism,
+       current state, historical context, key players, future outlook,
+       controversies, real-world use cases, economic impact)
+    3. Be specific enough to guide targeted web searches
+    4. Together with the other sub-questions, provide comprehensive coverage
+
+    For planning, you may use Tavily web search tools. You do not need to extract
+    content from the specific URL.
+
+    Output each sub-question as a separete entry in the output array.
+    Do not include any preamble, explanation, or section headers.
+  expected_output: >
+    A numbered list of 1-2 research sub-question. Example format:
+    1. What are the core technical mechanisms behind [question]?
+    2. Who are the leading researchers and organizations driving [question]?
+    3. What is the current state of adoption and deployment of [question]?
+    4. What are the major challenges and limitations of [question]?
+    5. How does [question] compare to alternative approaches?
+    6. What are the most promising real-world applications of [question]?
+    7. What are the projected future developments and timeline for [question]?
+
+researcher_task:
+  name: researcher_task
+  description: >
+    Sub-Question to Research: "{sub_question}"
+    Research Topic Context: "{question}"
+
+    Use the tavily search tool to find relevant sources for the sub-question.
+    For the 3-5 most promising results, use the tavily extract tool to extract
+    the full article content and gather detailed evidence. 
+    Most importantly, do not rely on prior knowledge — every claim must come from a retrieved source.
+
+    For each key finding:
+    - State the finding clearly and specifically
+    - Record the exact source URL
+
+    Prioritize authoritative sources: academic papers, government/institutional
+    reports, reputable industry publications, peer-reviewed research.
+  expected_output: >
+    A structured research findings report containing:
+    - 3-5 key findings in findings array, each element with:
+        * finding: The finding stated clearly with total length 300-600 words
+        * url: Source URI
+
+gap_checker_task:
+  name: gap_checker_task
+  description: >
+    Research Plan (the original sub-questions): {sub-questions}
+
+    Use the knowledge base retrieval tool to query against each sub-question
+    from the plan. For each sub-question, assess whether the retrieved content:
+    1. Provides at least 2-3 distinct source perspectives
+    2. Contains specific factual evidence (not just general statements)
+    3. Has sufficient depth to support 2-3 paragraphs of writing
+
+    If all sub-questions are adequately covered in the knowledge base, output
+    blank array.
+
+    If any sub-questions are inadequately covered, list each gap with a targeted
+    follow-up search query that would fill it.
+  expected_output: >
+    Either:
+    - Blank array
+    - list of search strings which would fill the gap
+
+writer_task:
+  name: writer_task
+  description: >
+    Research Question: "{question}"
+    Research Plan (use as structural guide): "{sub-questions}"
+    Critic Feedback (empty string means this is the first draft): "{critic_feedback}"
+
+    Write a comprehensive, well-structured research article on the question.
+
+    Instructions:
+    1. Use the knowledge source to query evidence for each sub-question
+       before writing that section. For querying knowledge base use 
+       similarity_threshold of 0.5 and limit of 5. The content 
+       retrieved from the knowledge base will have content as well as source URL. 
+       The source URL will be used for citation if the content is used
+       to write the final article.
+    2. Structure: Introduction (hook + thesis) → 4-6 body sections, each aligned
+       to each sub-question → Conclusion 
+    3. Every factual claim must include a citation inline with the content. Each citation
+       should be numbered. And the hyperlink of number should lead to the source URL 
+       retrieved from Knowledge Base.
+    4. Target length: 300-500 words. Do not pad — quality over quantity.
+    5. If critic_feedback is non-empty, address every specific issue raised before writing
+    6. Do not rely on prior knowledge LLMs — every claim must come from a retrieved source.
+
+    Use H1 for the title, H2 for section headers. Format in clean markdown.
+  expected_output: >
+    A complete research article in markdown format with:
+    - H1 title
+    - H2 section headers
+    - A conclusion section
+    - Citations at the end of article
+
+critic_task:
+  name: critic_task
+  description: >
+    Article Draft to Review:
+    {article_draft}
+
+    Review the article draft against these criteria:
+    1. UNSUPPORTED CLAIMS — any factual statement without a [Source: URL] citation
+    2. STRUCTURAL ISSUES — missing sections, illogical flow, abrupt transitions
+    3. CITATION FORMAT — malformed citations, broken URLs, missing citations
+    4. DEPTH ISSUES — sections that are superficial and need more evidence
+    5. ACCURACY — any claims that appear inconsistent with the rest of the article
+
+    For each issue found, specify:
+    - Issue type (from the list above)
+    - The exact sentence or section header with the problem (use quotes)
+    - A specific, actionable fix instruction
+
+    If the article meets publication standards with no significant issues
+    across all five criteria, output blank string
+  expected_output: >
+    Either:
+    - Blank string if the article is ready for publication, OR
+    - An array of feedback, if the article is not ready for publication. 
+      Each feeback will containing issue as well as instructions to fix
+
+banner_task:
+  name: banner_task
+  description: >
+    Research Article:
+    {final_article}
+
+    Read the article and identify its single most important concept or theme.
+    Write a concise image generation prompt (30-50 words) for a flat-style clipart
+    banner image that symbolically represents this concept.
+
+    Requirements:
+    - Style: flat design, simple clipart, bold colours, white background
+    - One or two iconic objects that immediately convey the core message
+    - No text, no human faces, no photorealistic elements
+    - Clean and professional, suitable as a research article header banner
+  expected_output: >
+    A single image generation prompt of 30-50 words. Output the prompt text
+    only — no explanation, no preamble, no quotes.
