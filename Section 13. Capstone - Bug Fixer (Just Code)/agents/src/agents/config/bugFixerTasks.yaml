@@ -1,0 +1,115 @@
+planner_task:
+  description: >
+    Analyze the GitHub issue and codebase below and produce a precise, minimal
+    fix plan.
+
+    ISSUE DESCRIPTION:
+    {bug_description}
+
+    CODE REPOSITORY PATH: {code_repo}
+
+    {retry_context}
+    
+    === CRITICAL: READ-ONLY MODE - NO FILE MODIFICATIONS === 
+    This is a READ-ONLY planning task. You are STRICTLY PROHIBITED from:
+      Creating new files (no Write, touch, or file creation of any kind)
+      Modifying existing files (no Edit operations)
+      Deleting files (no rm or deletion)
+      Moving or copying files (no mv or cp)
+      Creating temporary files anywhere, including /tmp
+      Using redirect operators (>, >>, |) or heredocs to write to files
+      Running ANY commands that change system state
+      Your role is EXCLUSIVELY to explore the codebase and design implementation plans. You do NOT have access to file editing tools - attempting to edit files will fail.
+
+    You will be provided with a set of requirements and optionally a perspective on how to approach the design process.
+
+    === Your Process ===
+    Understand Requirements: Focus on the requirements provided and apply your assigned 
+    perspective throughout the design process.
+    Explore Thoroughly:
+    1. Read any files provided to you in the initial prompt
+    2. Find existing patterns and conventions using tools available
+    3. Understand the current architecture
+    4. Identify similar features as reference
+    5. Trace through relevant code paths
+    6. Undestand the existing unit tests
+    Design Solution:
+    1. Create implementation approach based on your assigned perspective
+    2. Consider trade-offs and architectural decisions
+    3. Follow existing patterns where appropriate
+    4. As part of implementation, also take care of introducing or modifying test cases
+    Detail the Plan:
+    1. Provide step-by-step implementation strategy
+    2. Identify dependencies and sequencing
+    3. Anticipate potential challenges
+  expected_output: >
+    A numbered step-by-step fix plan.  Example format:
+      Step 1: In <file_path>, replace:
+        OLD: <exact old text>
+        NEW: <exact new text>
+        WHY: <reason>
+      Step 2: ...
+    Every step must be unambiguous enough that a developer can execute it
+    without any guessing.
+
+implementer_task:
+  description: >
+    Execute the following fix plan on the codebase located at {code_repo}.
+
+    FIX PLAN:
+    {plan}
+
+    INSTRUCTIONS:
+    1. Work through every step of the plan in order.
+    2. Before editing any file, call read_file to confirm the current content
+       and locate the exact text you will replace.
+    3. Call edit_file with old_content set to the exact text from the file
+       (matching whitespace and indentation precisely).
+    4. Use write_file only when the plan requires creating a brand-new file.
+    5. After each edit, call read_file to verify the change was applied.
+    6. Do NOT modify files not listed in the plan.
+    7. Do NOT add extra "improvements" — implement exactly what the plan says.
+  expected_output: >
+    A confirmation report listing each plan step, the file modified, and
+    verification that the edit was applied correctly.  Example:
+
+      Step 1: Edited <file_path> — replaced <old snippet> with <new snippet>.
+              Verified: file now contains expected content. ✓
+
+      Step 2: Created <file_path>. Verified: file exists with correct content. ✓
+
+
+validator_task:
+  description: >
+    Run the test suite for the project at {code_repo} and report the results.
+
+    INSTRUCTIONS:
+    1. Explore the repo with list_directory, glob_search, and read_file to find:
+         - pytest.ini, setup.cfg, or pyproject.toml  (Python projects)
+         - package.json test scripts                  (Node / TypeScript)
+         - Makefile test targets
+         - Any other test runner config
+    2. Determine the correct command(s) and working directory.
+    3. Run the tests with run_command.
+    4. Report the full output:
+         - Total passed / failed / errored count
+         - Full tracebacks for every failure
+         - The exit code returned by the test runner
+    5. Conclude with exactly one of these two lines:
+         ALL TESTS PASSED
+         TESTS FAILED
+    6. If there are no tests, assume that the tests have passed
+  expected_output: >
+    A structured test report:
+
+      Test command : <command>
+      Working dir  : <directory>
+
+      Passed : X
+      Failed : Y
+      Errors : Z
+
+      --- Failure details ---
+      <full error output>
+
+      Verdict: ALL TESTS PASSED   (or)   TESTS FAILED
