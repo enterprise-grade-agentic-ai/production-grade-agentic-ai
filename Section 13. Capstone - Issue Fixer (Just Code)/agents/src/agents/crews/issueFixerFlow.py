@@ -1,5 +1,5 @@
 """
-BugFixerFlow — CrewAI Flow that implements the core agentic loop:
+IssueFixerFlow — CrewAI Flow that implements the core agentic loop:
 
     Plan  →  Implement  →  Test  →  Retry (up to MAX_RETRIES times)
 
@@ -54,11 +54,11 @@ MAX_RETRIES = 3
 
 # ── State ────────────────────────────────────────────────────────────────────
 
-class BugFixerState(BaseModel):
+class IssueFixerState(BaseModel):
     # ---- caller-supplied inputs ----
     codeRepo: str = Field(default="", description="GitHub repo URL (https://github.com/owner/repo)")
     codeWorkingDirectory: str = Field(default="", description="Local base directory for clones")
-    bugDescription: str = Field(default="", description="Bug description / GitHub issue text")
+    issueDescription: str = Field(default="", description="Issue description / GitHub issue text")
 
     # ---- derived at setup time ----
     repoName: str = Field(default="", description="Repo name extracted from URL (used as sandbox sub-path)")
@@ -73,7 +73,7 @@ class BugFixerState(BaseModel):
 
 # ── Flow ─────────────────────────────────────────────────────────────────────
 
-class BugFixerFlow(Flow[BugFixerState]):
+class IssueFixerFlow(Flow[IssueFixerState]):
     """Orchestrates Plan → Implement → Test → Retry using CrewAI Flow."""
 
     agentsConfig: dict = {}
@@ -82,25 +82,20 @@ class BugFixerFlow(Flow[BugFixerState]):
     def __init__(self):
         super().__init__()
         config_dir = Path(__file__).resolve().parent.parent / "config"
-        with open(config_dir / "bugFixerAgents.yaml", "r") as f:
+        with open(config_dir / "issueFixerAgents.yaml", "r") as f:
             self.agentsConfig = yaml.safe_load(f)
-        with open(config_dir / "bugFixerTasks.yaml", "r") as f:
+        with open(config_dir / "issueFixerTasks.yaml", "r") as f:
             self.tasksConfig = yaml.safe_load(f)
 
-    # ── Step 1: kick off ────────────────────────────────────────────────────
-
+    # ── Step 1: Clone repo and create fix branch ──────────────────────────────
     @start()
-    def initialize(self):
-        logger.info("=" * 60)
-        logger.info("BugFixer starting")
-        logger.info("  Repo : %s", self.state.codeRepo)
-        logger.info("  Issue: %s", self.state.bugDescription[:120])
-        logger.info("=" * 60)
-
-    # ── Step 2: Clone repo and create fix branch ──────────────────────────────
-
-    @listen(initialize)
     def setup(self):
+        logger.info("=" * 60)
+        logger.info("IssueFixer starting")
+        logger.info("  Repo : %s", self.state.codeRepo)
+        logger.info("  Issue: %s", self.state.issueDescription[:120])
+        logger.info("=" * 60)
+
         """Clone the GitHub repo locally and create a UUID fix branch."""
         repo_url = self.state.codeRepo.strip()
         if not repo_url.startswith("http") and not repo_url.startswith("git@"):
@@ -123,7 +118,7 @@ class BugFixerFlow(Flow[BugFixerState]):
         else:
             logger.info("Repo already cloned at %s — skipping clone.", clone_path)
 
-        branch_name = f"bug-fix-{uuid.uuid4().hex[:8]}"
+        branch_name = f"issue-fix-{uuid.uuid4().hex[:8]}"
         self.state.branchName = branch_name
         result = subprocess.run(
             ["git", "checkout", "-b", branch_name],
@@ -138,7 +133,7 @@ class BugFixerFlow(Flow[BugFixerState]):
         set_sandbox_root(str(Path(self.state.codeWorkingDirectory).resolve()))
         logger.info("Sandbox root set to: %s", clone_path)
 
-    # ── Step 3: Plan ─────────────────────────────────────────────────────────
+    # ── Step 2: Plan ─────────────────────────────────────────────────────────
     # Triggered by setup on the first pass, and by the "retry" event on
     # every subsequent pass — so a single method serves both cases.
 
@@ -161,7 +156,7 @@ class BugFixerFlow(Flow[BugFixerState]):
                 crew_name="planner",
                 task_config_key="planner_task",
                 inputs={
-                    "bug_description": self.state.bugDescription,
+                    "issue_description": self.state.issueDescription,
                     "code_repo": self.state.repoName,
                     "retry_context": retry_context,
                 },
@@ -228,7 +223,6 @@ class BugFixerFlow(Flow[BugFixerState]):
         return "exhausted"
 
     # ── Terminal step ─────────────────────────────────────────────────────────
-
     @listen(or_("success", "exhausted"))
     async def finalize(self) -> str:
         separator = "=" * 60
@@ -327,7 +321,7 @@ class BugFixerFlow(Flow[BugFixerState]):
             return "(no changes committed)"
 
         # Commit
-        short_desc = self.state.bugDescription[:72].replace('"', "'")
+        short_desc = self.state.issueDescription[:72].replace('"', "'")
         commit_msg = f"fix: {short_desc}"
         result = subprocess.run(
             ["git", "commit", "-m", commit_msg],
@@ -347,11 +341,11 @@ class BugFixerFlow(Flow[BugFixerState]):
         logger.info("Pushed branch: %s", self.state.branchName)
 
         # Create PR via GitHub CLI
-        pr_title = f"fix: {self.state.bugDescription[:60]}"
+        pr_title = f"fix: {self.state.issueDescription[:60]}"
         pr_body = (
             f"## Summary\n\n"
-            f"Automated fix for the following bug:\n\n"
-            f"> {self.state.bugDescription}\n\n"
+            f"Automated fix for the following issue:\n\n"
+            f"> {self.state.issueDescription}\n\n"
             f"## Fix Plan\n\n"
             f"{self.state.plan}\n\n"
             f"## Test Results\n\n"
@@ -375,7 +369,6 @@ class BugFixerFlow(Flow[BugFixerState]):
 
 def _parse_passed(output: str) -> bool:
     """Return False if the validator's report contains failure/error indicators, True otherwise."""
-    upper = output.upper()
-    if "FAILED" in upper or "ERROR" in upper:
+    if "FAILED" in output:
         return False
     return True

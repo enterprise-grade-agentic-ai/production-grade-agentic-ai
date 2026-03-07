@@ -1,7 +1,7 @@
 [project]
 name = "agents"
 version = "0.1.0"
-description = "Bug Fixing using crewAI"
+description = "Issue Fixing using crewAI"
 authors = [
     { name = "DeepLens Tech", email = "support@deeplens.tech" },
 ]

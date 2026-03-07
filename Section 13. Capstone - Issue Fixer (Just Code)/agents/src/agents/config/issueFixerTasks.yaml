@@ -4,7 +4,7 @@ planner_task:
     fix plan.
 
     ISSUE DESCRIPTION:
-    {bug_description}
+    {issue_description}
 
     CODE REPOSITORY PATH: {code_repo}
 
@@ -32,7 +32,7 @@ planner_task:
     3. Understand the current architecture
     4. Identify similar features as reference
     5. Trace through relevant code paths
-    6. Undestand the existing unit tests
+    6. Understands the existing unit tests
     Design Solution:
     1. Create implementation approach based on your assigned perspective
     2. Consider trade-offs and architectural decisions
@@ -74,10 +74,9 @@ implementer_task:
     verification that the edit was applied correctly.  Example:
 
       Step 1: Edited <file_path> — replaced <old snippet> with <new snippet>.
-              Verified: file now contains expected content. ✓
+              Verified: file now contains expected content. 
 
-      Step 2: Created <file_path>. Verified: file exists with correct content. ✓
-
+      Step 2: Created <file_path>. Verified: file exists with correct content. 
 
 validator_task:
   description: >

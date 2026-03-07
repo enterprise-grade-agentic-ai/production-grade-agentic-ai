@@ -1,7 +1,7 @@
 """
-Custom tools for the Bug Fixer agents.
+Custom tools for the Issue Fixer agents.
 
-Tool inventory — mirrors what Claude Code itself can do:
+Tool inventory:
   grep_search      Search file content by regex pattern
   glob_search      Find files by name/path pattern
   read_file        Read a file's content
@@ -361,7 +361,7 @@ def web_fetch(url: str) -> str:
     try:
         req = urllib.request.Request(
             url,
-            headers={"User-Agent": "Mozilla/5.0 (compatible; BugFixerBot/1.0)"},
+            headers={"User-Agent": "Mozilla/5.0 (compatible; IssueFixerBot/1.0)"},
         )
         with urllib.request.urlopen(req, timeout=15) as resp:
             raw = resp.read().decode("utf-8", errors="replace")
@@ -385,7 +385,7 @@ def web_fetch(url: str) -> str:
 @tool("web_search")
 def web_search(query: str) -> str:
     """Search the web and return a summary of the top results.
-    Useful for looking up error messages, library APIs, or known bug fixes.
+    Useful for looking up error messages, library APIs, or known issue fixes.
 
     Args:
         query: The search query string.
@@ -400,7 +400,7 @@ def web_search(query: str) -> str:
         })
         req = urllib.request.Request(
             f"https://api.duckduckgo.com/?{params}",
-            headers={"User-Agent": "Mozilla/5.0 (compatible; BugFixerBot/1.0)"},
+            headers={"User-Agent": "Mozilla/5.0 (compatible; IssueFixerBot/1.0)"},
         )
         with urllib.request.urlopen(req, timeout=15) as resp:
             data = json.loads(resp.read().decode("utf-8"))

@@ -1,20 +1,20 @@
-# Bug Fixer Agent
+# Issue Fixer Agent
 
-An agentic bug-fixing system built with CrewAI, Langfuse, and a Docker sandbox. Given a GitHub repository URL and a bug description, the agent clones the repo, plans a fix, implements it, validates it by running the test suite, and — on success — commits the changes and opens a pull request.
+An agentic issue-fixing system built with CrewAI, Langfuse, and a Docker sandbox. Given a GitHub repository URL and a issue description, the agent clones the repo, plans a fix, implements it, validates it by running the test suite, and — on success — commits the changes and opens a pull request.
 
 ## Architecture
 
 ```
-  CLI (fixBug.py)
+  CLI (fixIssue.py)
     |
-    | --repo <github-url> --bug "<description>"
+    | --repo <github-url> --issue "<description>"
     v
-  BugFixerFlow (CrewAI Flow)
+  IssueFixerFlow (CrewAI Flow)
     |
     |-- initialize      → logs startup info
     |
     |-- setup           → git clone repo
-    |                     git checkout -b bug-fix-<uuid>
+    |                     git checkout -b issue-fix-<uuid>
     |                     mount clone into Docker sandbox
     |
     |-- plan            → Planner Agent
@@ -84,9 +84,9 @@ If none of the above API keys are set, the agent falls back to AWS Bedrock (`bed
 
 ```bash
 cd agents
-uv run python -m src.agents.fixBug \
+uv run python -m src.agents.fixIssue \
   --repo https://github.com/owner/repo \
-  --bug "Description of the bug to fix"
+  --issue "Description of the issue to fix"
 ```
 
 ### Options
@@ -94,25 +94,25 @@ uv run python -m src.agents.fixBug \
 | Flag | Short | Required | Description |
 |------|-------|----------|-------------|
 | `--repo` | `-r` | Yes | GitHub repo URL |
-| `--bug` | `-b` | Yes | Bug description |
+| `--issue` | `-b` | Yes | Issue description |
 | `--working-dir` | `-d` | No | Local directory for cloning (default: `../codeWorkingDirectory`) |
 
 ### Example
 
 ```bash
-uv run python -m src.agents.fixBug \
+uv run python -m src.agents.fixIssue \
   --repo https://github.com/owner/my-app \
-  --bug "The login endpoint returns 500 when the email field contains uppercase letters" \
-  --working-dir /tmp/bug-fixer
+  --issue "The login endpoint returns 500 when the email field contains uppercase letters" \
+  --working-dir /tmp/issue-fixer
 ```
 
 On success the agent prints a summary including the PR URL. On failure it prints the last test output after exhausting all retries.
 
 ## How It Works
 
-1. **Setup** — The repo is cloned into `{working-dir}/{repo-name}` and a new branch `bug-fix-<8-char-uuid>` is created. The clone directory is mounted into a Docker sandbox so agents can read and modify files safely.
+1. **Setup** — The repo is cloned into `{working-dir}/{repo-name}` and a new branch `issue-fix-<8-char-uuid>` is created. The clone directory is mounted into a Docker sandbox so agents can read and modify files safely.
 
-2. **Plan** — The Planner Agent reads the codebase (grep, glob, file reads) and produces a numbered, step-by-step fix plan based on the bug description.
+2. **Plan** — The Planner Agent reads the codebase (grep, glob, file reads) and produces a numbered, step-by-step fix plan based on the issue description.
 
 3. **Implement** — The Implementer Agent follows the plan and edits source files inside the sandbox.
 
@@ -120,7 +120,7 @@ On success the agent prints a summary including the PR URL. On failure it prints
 
 5. **Retry loop** — If tests fail, the flow retries up to 3 times, feeding the failure output back into the planner so each attempt uses a different approach.
 
-6. **Finalize** — On success: changes are committed (`fix: <bug description>`), the branch is pushed, and a PR is opened via `gh pr create`. On failure or error: the local clone is deleted and a summary of the last test output is returned.
+6. **Finalize** — On success: changes are committed (`fix: <issue description>`), the branch is pushed, and a PR is opened via `gh pr create`. On failure or error: the local clone is deleted and a summary of the last test output is returned.
 
 ## Agent Tools
 
@@ -141,7 +141,7 @@ Each agent has access to a subset of the following tools, all of which operate i
 
 ## Tracing
 
-All LLM calls and agent steps are traced in Langfuse under a `bug-fixer` span. Request/response hooks log the last two messages of each LLM call for debugging.
+All LLM calls and agent steps are traced in Langfuse under a `issue-fixer` span. Request/response hooks log the last two messages of each LLM call for debugging.
 
 ## Docker Sandbox Security
 

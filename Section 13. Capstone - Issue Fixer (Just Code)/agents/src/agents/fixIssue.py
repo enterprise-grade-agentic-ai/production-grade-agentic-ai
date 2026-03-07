@@ -3,9 +3,9 @@ import asyncio
 import logging
 
 from .utils.env import populateEnvWithSecrets
-from .utils import llmUtils  # registers the LLM call hooks as a side effect
+from .utils.llmUtils import registerLlmHooks
 from openinference.instrumentation.crewai import CrewAIInstrumentor
-from .crews.bugFixerFlow import BugFixerFlow
+from .crews.issueFixerFlow import IssueFixerFlow
 from langfuse import get_client
 
 # Populate environment variables from AWS Secrets Manager
@@ -21,16 +21,18 @@ CrewAIInstrumentor().instrument(skip_dep_check=True)
 
 logger = logging.getLogger(__name__)
 
+# Register LLM hooks (fixes Anthropic role-alternation requirement)
+registerLlmHooks()
 
-async def run(repo: str, bug_description: str, working_dir: str) -> str:
+async def run(repo: str, issue_description: str, working_dir: str) -> str:
     inputs = {
         "codeRepo": repo,
         "codeWorkingDirectory": working_dir,
-        "bugDescription": bug_description,
+        "issueDescription": issue_description,
     }
 
-    with langfuse.start_as_current_span(name="bug-fixer"):
-        flow = BugFixerFlow()
+    with langfuse.start_as_current_span(name="issue-fixer"):
+        flow = IssueFixerFlow()
         try:
             response = await flow.kickoff_async(inputs=inputs)
         except Exception as e:
@@ -46,17 +48,19 @@ async def run(repo: str, bug_description: str, working_dir: str) -> str:
 
 def main():
     parser = argparse.ArgumentParser(
-        description="Automated bug fixer — clones a GitHub repo, fixes the bug, and opens a PR."
+        description="Automated issue fixer — clones a GitHub repo, fixes the issue, and opens a PR."
+    )
+    parser.add_argument(
+        "--plot", action="store_true",
+        help="Render the flow diagram and exit (opens an HTML file in the browser).",
     )
     parser.add_argument(
         "--repo", "-r",
-        required=True,
         help="GitHub repo URL (e.g. https://github.com/owner/repo)",
     )
     parser.add_argument(
-        "--bug", "-b",
-        required=True,
-        help="Description of the bug to fix",
+        "--issue", "-b",
+        help="Description of the issue to fix",
     )
     parser.add_argument(
         "--working-dir", "-d",
@@ -65,7 +69,14 @@ def main():
     )
     args = parser.parse_args()
 
-    response = asyncio.run(run(args.repo, args.bug, args.working_dir))
+    if args.plot:
+        IssueFixerFlow().plot()
+        return
+
+    if not args.repo or not args.issue:
+        parser.error("--repo and --issue are required when not using --plot")
+
+    response = asyncio.run(run(args.repo, args.issue, args.working_dir))
     print(response)
 
 
