@@ -1,6 +1,6 @@
 # Deep Research Agent
 
-A Udemy Capstone project that mimics Gemini Deep Research using CrewAI, AWS Bedrock, and AWS AgentCore. Given a research topic, the agent conducts parallel web research, synthesizes findings into a long-form article, applies an editorial critique loop, and publishes the final article to a public URL on S3.
+A Capstone project that mimics Gemini Deep Research using CrewAI, AWS Bedrock, and AWS AgentCore. Given a research topic, the agent conducts parallel web research, synthesizes findings into a long-form article, applies an editorial critique loop, and publishes the final article to a public URL on S3.
 
 ## Architecture
 
