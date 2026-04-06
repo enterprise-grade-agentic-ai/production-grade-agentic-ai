@@ -24,10 +24,3 @@ This pattern runs multiple worker agents in parallel. In the demo, the CrewAI fl
 This pattern lets a manager agent create sub-tasks and assign them to worker agents. In the demo, a new crew called Orchestrator Worker Crew was created to implement this. Do something similar for your application. Refer to the [CrewAI hierarchical process docs](https://docs.crewai.com/en/learn/hierarchical-process) for configuration guidance.
 
 ---
-
-## Reflection
-
-| Question | Answer |
-| :---- | :---- |
-| Did you face any issues with this challenge? If so, what was the issue? | No |
-| Link to your public GitHub repo containing a solution? (Optional — write "Not Available" if you'd prefer not to share) | Not Available |
