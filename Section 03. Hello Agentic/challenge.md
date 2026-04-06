@@ -1,4 +1,4 @@
-# Challenge: Hello Agentic
+# Challenge: CrewAI Application
 
 This challenge is about building what the instructor demonstrated in the section videos. Your goal is to create a basic CrewAI agentic application with Langfuse tracing and structured output. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
@@ -20,6 +20,6 @@ Tracing is essential for understanding what's happening inside an agentic applic
 
 ## Task 3: Generate Structured Output
 
-Agentic applications often need to produce output that other systems can consume. Modify your application to return structured output using Pydantic. Refer to the [CrewAI tasks documentation](https://docs.crewai.com/en/concepts/tasks#using-output-pydantic) for guidance.
+Agentic applications often need to produce output that other systems can consume. Modify your application to return structured output using Pydantic. Refer to the [CrewAI tasks documentation](https://docs.crewai.com/en/concepts/tasks#getting-structured-consistent-outputs-from-tasks) for guidance.
 
 ---

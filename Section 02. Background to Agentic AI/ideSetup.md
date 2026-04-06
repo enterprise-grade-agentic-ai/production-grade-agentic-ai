@@ -1,8 +1,8 @@
 # Challenge: IDE Setup
 
-> **Cost note:** The IDEs mentioned here are free to download. Some, like Cursor, have a free tier for AI features — that's enough for this challenge.
-
 The goal of this challenge is to get your development environment ready for all the challenges ahead. This means having Python installed and an AI-assisted IDE set up and working. The demos use **Cursor**, but you're welcome to use any IDE you're comfortable with, such as **Visual Studio Code** (with GitHub Copilot or the Claude extension).
+
+> **Cost note:** The IDEs mentioned here are free to download. Some, like Cursor, have a free tier for AI features — that's enough for this challenge.
 
 ---
 

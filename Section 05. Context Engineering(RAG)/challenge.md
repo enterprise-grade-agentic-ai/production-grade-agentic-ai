@@ -2,7 +2,11 @@
 
 This challenge is about building what the instructor demonstrated in the section videos. Your goal is to implement RAG end-to-end by building an AWS Knowledge Base, populating a vector database, and integrating it into the application. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-> **Cost note:** This challenge uses AWS Knowledge Base with an embedding model and Pinecone as a vector store. Both have free tiers that should comfortably cover a dev/test setup — just avoid syncing large document sets unnecessarily.
+> **Cost note:** This challenge uses AWS Knowledge Base with an embedding model and Pinecone as a vector store.
+> 
+> **Pinecone:** The free tier (Starter plan) includes 1 serverless index and is more than enough for this challenge.
+> 
+> **AWS Knowledge Base:** Costs come from two sources — the embedding model and the vector store queries. AWS Bedrock charges per token for embeddings. There is no charge for the Knowledge Base itself, only for Bedrock model usage during sync and retrieval. To keep costs minimal: use a small, focused document set (a few PDFs), avoid re-syncing unnecessarily, and stick to the default chunking strategy. A typical dev/test setup should cost only a few cents.
 
 
 ![RAG Flow](images/rag-flow.png)

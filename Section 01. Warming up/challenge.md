@@ -1,8 +1,9 @@
 # Challenge: Try out a coding agent
 
-> **Cost note:** Lovable offers a free tier that's sufficient for this challenge — no paid plan needed.
 
 This challenge is about playing around with a coding agent that generates code and UI based on your instructions. Try out [Lovable](https://lovable.dev/) or any other code generation agent you prefer.
+
+> **Cost note:** Lovable offers a free tier that's sufficient for this challenge — no paid plan needed.
 
 ---
 

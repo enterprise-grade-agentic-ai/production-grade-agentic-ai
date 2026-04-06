@@ -25,7 +25,7 @@ Create an [MCP Gateway](https://docs.aws.amazon.com/bedrock-agentcore/latest/dev
 
 ## Task 3: Integrate MCP in the Agentic Application
 
-Use [MCPServerAdapter](https://docs.crewai.com/en/mcp/overview) to connect to the MCP Gateway and fetch tools. You'll need a bearer token for authentication. These tools can then be used by any CrewAI agent — for example:
+Use [MCPServerAdapter](https://docs.crewai.com/en/mcp/overview#-advanced-mcpserveradapter-for-complex-scenarios) to connect to the MCP Gateway and fetch tools. You'll need a bearer token for authentication. These tools can then be used by any CrewAI agent — for example:
 
 - A **researcher agent** using the Tavily tool to search the internet.
 - A **publishing agent** using the publish tool to push the final report to its destination.
