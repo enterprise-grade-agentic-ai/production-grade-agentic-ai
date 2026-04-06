@@ -1,8 +1,9 @@
 # Challenge: Context Engineering (RAG)
 
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to implement RAG end-to-end by building an AWS Knowledge Base, populating a vector database, and integrating it into the application. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
+
 > **Cost note:** This challenge uses AWS Knowledge Base with an embedding model and Pinecone as a vector store. Both have free tiers that should comfortably cover a dev/test setup — just avoid syncing large document sets unnecessarily.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to implement RAG end-to-end: build an AWS Knowledge Base, populate a vector database, and integrate it into the application. By the end, the flow will look like this:
 
 ![RAG Flow](images/rag-flow.png)
 

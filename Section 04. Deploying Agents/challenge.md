@@ -1,8 +1,8 @@
 # Challenge: Deploying Agents
 
-> **Cost note:** Deploying to AWS AgentCore incurs cloud compute costs while the agent is running. Tear down the deployment when you're done testing to avoid idle charges.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to deploy the emerging technology research application to AWS AgentCore and explore its observability and version management features. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to deploy it to AWS AgentCore and explore its observability and version management features.
+> **Cost note:** Deploying to AWS AgentCore incurs cloud compute costs while the agent is running. Tear down the deployment when you're done testing to avoid idle charges.
 
 ---
 

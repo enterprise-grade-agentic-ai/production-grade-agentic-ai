@@ -1,8 +1,8 @@
 # Challenge: Inter-Agent Communication (A2A)
 
-> **Cost note:** This challenge runs multiple LLM agents communicating over A2A. API usage is similar to previous challenges — nothing out of the ordinary.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to expose the research application over the A2A protocol and connect it to a new LMS Virtual Assistant agent. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to expose it over the A2A protocol and integrate it with a new LMS Virtual Assistant.
+> **Cost note:** This challenge runs multiple LLM agents communicating over A2A. API usage is similar to previous challenges — nothing out of the ordinary.
 
 ---
 

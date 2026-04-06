@@ -1,8 +1,8 @@
 # Challenge: Agent Evaluation
 
-> **Cost note:** Running a critic agent adds one extra LLM call per research cycle. It's a small overhead — just worth keeping in mind if you run many iterations.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to add inline evaluation using a critic agent and online evaluation using LLM as a judge via Langfuse. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to add both inline and online evaluation to the application.
+> **Cost note:** Running a critic agent adds one extra LLM call per research cycle. It's a small overhead — just worth keeping in mind if you run many iterations.
 
 ---
 

@@ -1,8 +1,8 @@
 # Challenge: Agent Memory
 
-> **Cost note:** This challenge uses AWS AgentCore Memory, which has its own pricing separate from LLM calls. Check the AWS free tier limits before running many iterations.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to add short-term and long-term memory to the application and turn it into a proper chat experience. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to add both short-term and long-term memory, turning it into a proper chat application.
+> **Cost note:** This challenge uses AWS AgentCore Memory, which has its own pricing separate from LLM calls. Check the AWS free tier limits before running many iterations.
 
 ---
 

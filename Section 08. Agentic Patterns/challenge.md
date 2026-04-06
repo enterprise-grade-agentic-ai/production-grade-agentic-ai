@@ -1,8 +1,8 @@
 # Challenge: Agentic Patterns
 
-> **Cost note:** Generating banner images via DALL-E incurs image generation costs on top of LLM usage. Run a few iterations to test, rather than in bulk.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to implement the parallel execution pattern and the orchestrator-worker pattern in the agentic application. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to implement two agentic patterns: parallel execution and orchestrator-worker.
+> **Cost note:** Generating banner images via DALL-E incurs image generation costs on top of LLM usage. Run a few iterations to test, rather than in bulk.
 
 ---
 

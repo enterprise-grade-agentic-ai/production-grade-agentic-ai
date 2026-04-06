@@ -1,8 +1,8 @@
 # Challenge: Agent Security
 
-> **Cost note:** This challenge involves running LLM-powered agents, including intentional adversarial prompts to test goal hijacking. Expect a modest increase in API usage — keep an eye on your token consumption, especially during the goal-hijack testing steps.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to harden the application against goal hijacking and identity or privilege abuse attacks. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This challenge builds on the emerging technology research application from previous sections. Your goal is to harden the application against two common agent security risks.
+> **Cost note:** This challenge involves running LLM-powered agents, including intentional adversarial prompts to test goal hijacking. Expect a modest increase in API usage — keep an eye on your token consumption, especially during the goal-hijack testing steps.
 
 ---
 

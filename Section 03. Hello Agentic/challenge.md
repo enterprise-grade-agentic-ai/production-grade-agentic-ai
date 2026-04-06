@@ -1,8 +1,8 @@
 # Challenge: Hello Agentic
 
-> **Cost note:** This challenge makes LLM API calls, which are pay-per-use — keep an eye on your usage if you run it many times. Langfuse has a generous free tier and shouldn't add to your bill.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to create a basic CrewAI agentic application with Langfuse tracing and structured output. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
-This is your first challenge using CrewAI. You'll build a basic agentic application, explore its internals with Langfuse tracing, and produce structured output.
+> **Cost note:** This challenge makes LLM API calls, which are pay-per-use — keep an eye on your usage if you run it many times. Langfuse has a generous free tier and shouldn't add to your bill.
 
 ---
 

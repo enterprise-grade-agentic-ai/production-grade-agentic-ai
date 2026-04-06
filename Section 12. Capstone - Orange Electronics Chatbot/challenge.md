@@ -1,6 +1,6 @@
 # Challenge: Orange Electronics Chatbot
 
-This **optional** challenge is to build an end-to-end **chatbot for Orange Electronics**, integrated with Telegram for a complete user-facing experience.
+This challenge is about building what the instructor demonstrated in the section videos. Your goal is to build a full end-to-end chatbot for Orange Electronics, integrated with Telegram and backed by RAG, MCP, memory, and security features. The current folder contains the reference implementation from the instructor. You can refer to that code as well as the README.md in this folder for guidance.
 
 > **Heads up on costs:** Cloud services may charge based on usage. The course examples use free or pay-per-use options where possible — just worth double-checking pricing before you run anything, and cleaning up any resources you no longer need.
 
