@@ -27,3 +27,5 @@ In this task you are expected to:
 
 1. Build a **LMS Virtual Assistant** — a simple CrewAI application with one agent and one task. It can search the internet to answer user questions about courses and technology. You may use the Tavily Search tool for this.
 2. Connect the LMS Virtual Assistant to the Emerging Technology Research Application so that, when the user asks for research on an emerging technology, it delegates to that application over A2A. Refer to the [CrewAI A2A delegation docs](https://docs.crewai.com/en/learn/a2a-agent-delegation) for guidance.
+
+---

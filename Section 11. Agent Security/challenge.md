@@ -30,3 +30,5 @@ Modify the emerging technology research application to first **reproduce** the I
 - Add a tool that reads from or writes to a database or API of your choice.
 - Reproduce the risk by having one user fetch or modify another user's data through the agent.
 - Then add a **deterministic condition** inside the tool itself to enforce user-scoped access — preventing any agent from bypassing the check.
+
+---
